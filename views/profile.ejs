@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+    <% include partials/head %>
+</head>
+<body>
+<div class="container">
+    <header>
+        <% include partials/header %>
+    </header>
+
+
+    <div class="row">
+
+        <!-- LOCAL INFORMATION -->
+<!--
+        <div class="col-sm-6">
+            <div class="well">
+                <h3><span class="fa fa-user"></span> Local</h3>
+
+                <% if (user.local.email) { %>
+                    <p>
+                        <strong>id</strong>: <%= user._id %><br>
+                        <strong>email</strong>: <%= user.local.email %><br>
+                        <strong>password</strong>: <%= user.local.password %>
+                    </p>
+                    
+                    <a href="/unlink/local" class="btn btn-default">Unlink</a>
+                <% } else { %>
+                    <a href="/connect/local" class="btn btn-default">Connect Local</a>
+                <% } %>
+
+            </div>
+        </div>
+-->
+        <!-- Strava INFORMATION -->
+        <div class="col-sm-6">
+            <div class="well">
+                <h3 class="text-info"><span><img src="http://www.userlogos.org/files/logos/Deva/strava3.png"></img></span> Strava</h3>
+
+                <% if (user.strava.token) { %>
+                    <p>
+                        <strong>id</strong>: <%= user.strava.id %><br>
+                        <strong>token</strong>: <%= user.strava.token %><br>
+                        <strong>display name</strong>: <%= user.strava.name %><br>
+                        <strong>username</strong>: <%= user.strava.email %>
+                    </p>
+
+                    <a href="/unlink/strava" class="btn btn-info">Unlink</a>
+                <% } else { %>
+                    <a href="/connect/strava" class="btn btn-info">Connect Strava</a>
+                <% } %>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="text-center">
+<!--
+        <p>A demo by <a href="http://scotch.io">Scotch</a>.</p>
+        <p>Visit the <a href="http://scotch.io/tutorials/javascript/easy-node-authentication-setup-and-local">tutorial</a>.</p>
+-->
+    </div>
+
+</div>
+</body>
+</html>

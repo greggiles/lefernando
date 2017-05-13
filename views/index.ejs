@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <% include partials/head %>
+</head>
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+<% include partials/header %>
+
+<!-- Intro Header -->
+<header class="intro">
+    <div class="intro-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <% if (typeof user == 'undefined') { %>
+                        <p>Login with:</p>
+                        <p><a href="/auth/strava"><img src="./btn_strava_connectwith_orange.png"></a></p>
+                    <% } else { %>
+                        <h1 class="brand-heading">LeFernando</h1>
+                                <p class="intro-text">the best week of spring.
+                        <br>too bad you can't talk about it, huh, <%= user.strava.name %>?</p>
+                        <a href="#about" class="btn btn-circle page-scroll">
+                            <i class="fa fa-angle-double-down animated"></i>
+                        </a>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<% if (typeof user != 'undefined') { %>
+
+<!-- About Section -->
+<section id="about" class="container content-section text-center">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+            <h2>About LeFernando</h2>
+            <p>A fun week of Riding.</p>
+            <p>Friends. New Friends. Bikes. Beers.</p>
+            <p>Powered by Strava</p>
+        </div>
+    </div>
+</section>
+
+<% } %>
+
+<footer>
+    <% include partials/footer %>
+</footer>
+</body>
+</html>

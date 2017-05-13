@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <% include ../partials/head %>
+</head>
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+<% include ../partials/header %>
+
+<!-- Intro Header -->
+<header class="intro">
+    <div class="intro-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <% if (typeof user == 'undefined') { %>
+                    <p>Login with:</p>
+                    <p><a href="/auth/strava"><img src="./btn_strava_connectwith_orange.png"></a></p>
+                    <% } else { %>
+                    <h1 class="brand-heading">LeFernando 2017</h1>
+                    <p class="intro-text">Schedule!</p>
+                        <ul>
+                            <li>Sunday 5/21 - 9:45am - Park in back of middle school</li>
+                            <li>Monday 5/22 - 8:45pm - Meet at JCPenny trail-head off US23</li>
+                            <li>Tuesday 5/23 - 6:15pm - Meet at the only bush in this field</li>
+                            <li>Thursday 5/25 - 6:15pm - Meet in the West Lot under this Tree</li>
+                            <li>Friday 5/26 - U Pick em' - Highland Trail head on your own</li>
+                            <li>Saturday 5/27 - 9:45am - Meet at this Shelter at BRecthe best week of spring.</li>
+                        </ul>
+                    <a href="#Stage1" class="btn btn-circle page-scroll">
+                        <i class="fa fa-angle-double-down animated"></i>
+                    </a>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<% if (typeof user != 'undefined') { %>
+
+<!-- About Section -->
+<section id="Stage1" class="container content-section text-center">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+            <iframe style="width:100%;height:600px;" src="http://veloviewer.com/segments/14745967/embed2" frameborder="0" scrolling="no"></iframe>
+        </div>
+    </div>
+</section>
+
+<% } %>
+
+<footer>
+    <% include ../partials/footer %>
+</footer>
+</body>
+</html>
