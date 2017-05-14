@@ -20,6 +20,9 @@
                     <a href="#page-top"></a>
                 </li>
                 <% if (typeof user != 'undefined') { %>
+                <% if ( user.role == 'admin' ) { %>
+                <li><a class="page-scroll" href="/admin">Admin</a></li>
+                <% } %>
                 <% if ( user.events.length > 0 ) { %>
                     <li><a class="page-scroll" href="/signup">Signup</a></li>
                 <% } %>

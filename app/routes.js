@@ -1,3 +1,7 @@
+var admin = require('../config/admin.js');
+// load up the user model
+var User       = require('./models/user');
+
 module.exports = function(app, passport) {
 
 // normal routes ===============================================================
@@ -30,6 +34,59 @@ module.exports = function(app, passport) {
     });
 
 // =============================================================================
+// ADMIN Stuff?  ==================================================
+// =============================================================================
+    // LOGIN ===============================
+    // show the login form
+
+    app.post('/makeadmin', isAdmin, function(req, res){
+        if ('591619408a967e2efc0197b0' == req.body.userId)
+            res.redirect('/');
+        else {
+            User.findOneAndUpdate( {_id: req.body.userId}, {$set:{role:req.body.role}},function(err, doc){
+                if(err){
+                    console.log("Something wrong when updating data!");
+                }
+                res.redirect('/admin');
+            });
+        }
+
+    });
+
+    app.post('/makeLF', isAdmin, function(req, res){
+        var conditions = {
+            _id: req.body.userId,
+            'events.name' : { $ne: 'lf2017'}
+        };
+        var update = {
+            $addToSet: { events: { "name": "lf2017"}}
+        };
+        User.findOneAndUpdate(conditions, update, function(err, doc){
+            if(err){
+                console.log("Something wrong when updating data!");
+            }
+            res.redirect('/admin');
+
+        });
+    });
+
+    app.get('/admin', isAdmin, function(req, res) {
+        admin.listUsers( function (users) {
+            res.render('admin.ejs', {
+                users: users,
+                user : req.user
+            });
+        });
+    });
+    // process the login form
+    app.post('/updateuser', passport.authenticate('user-update', {
+        successRedirect : '/profile', // redirect to the secure profile section
+        failureRedirect : '/login', // redirect back to the signup page if there is an error
+        failureFlash : true // allow flash messages
+    }));
+
+
+// =============================================================================
 // AUTHENTICATE (FIRST LOGIN) ==================================================
 // =============================================================================
 
@@ -60,42 +117,6 @@ module.exports = function(app, passport) {
             failureFlash : true // allow flash messages
         }));
 
-    // facebook -------------------------------
-
-        // send to facebook to do the authentication
-        app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
-
-        // handle the callback after facebook has authenticated the user
-        app.get('/auth/facebook/callback',
-            passport.authenticate('facebook', {
-                successRedirect : '/profile',
-                failureRedirect : '/'
-            }));
-
-    // twitter --------------------------------
-
-        // send to twitter to do the authentication
-        app.get('/auth/twitter', passport.authenticate('twitter', { scope : 'email' }));
-
-        // handle the callback after twitter has authenticated the user
-        app.get('/auth/twitter/callback',
-            passport.authenticate('twitter', {
-                successRedirect : '/profile',
-                failureRedirect : '/'
-            }));
-
-
-    // google ---------------------------------
-
-        // send to google to do the authentication
-        app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
-
-        // the callback after google has authenticated the user
-        app.get('/auth/google/callback',
-            passport.authenticate('google', {
-                successRedirect : '/profile',
-                failureRedirect : '/'
-            }));
 
     // strava ---------------------------------
 
@@ -109,56 +130,6 @@ module.exports = function(app, passport) {
                 failureRedirect : '/'
             }));
 
-// =============================================================================
-// AUTHORIZE (ALREADY LOGGED IN / CONNECTING OTHER SOCIAL ACCOUNT) =============
-// =============================================================================
-
-    // locally --------------------------------
-        app.get('/connect/local', function(req, res) {
-            res.render('connect-local.ejs', { message: req.flash('loginMessage') });
-        });
-        app.post('/connect/local', passport.authenticate('local-signup', {
-            successRedirect : '/profile', // redirect to the secure profile section
-            failureRedirect : '/connect/local', // redirect back to the signup page if there is an error
-            failureFlash : true // allow flash messages
-        }));
-
-    // facebook -------------------------------
-
-        // send to facebook to do the authentication
-        app.get('/connect/facebook', passport.authorize('facebook', { scope : 'email' }));
-
-        // handle the callback after facebook has authorized the user
-        app.get('/connect/facebook/callback',
-            passport.authorize('facebook', {
-                successRedirect : '/profile',
-                failureRedirect : '/'
-            }));
-
-    // twitter --------------------------------
-
-        // send to twitter to do the authentication
-        app.get('/connect/twitter', passport.authorize('twitter', { scope : 'email' }));
-
-        // handle the callback after twitter has authorized the user
-        app.get('/connect/twitter/callback',
-            passport.authorize('twitter', {
-                successRedirect : '/profile',
-                failureRedirect : '/'
-            }));
-
-
-    // google ---------------------------------
-
-        // send to google to do the authentication
-        app.get('/connect/google', passport.authorize('google', { scope : ['profile', 'email'] }));
-
-        // the callback after google has authorized the user
-        app.get('/connect/google/callback',
-            passport.authorize('google', {
-                successRedirect : '/profile',
-                failureRedirect : '/'
-            }));
 
     // strava ---------------------------------
 
@@ -233,4 +204,23 @@ function isLoggedIn(req, res, next) {
         return next();
 
     res.redirect('/');
+}
+
+function isAdmin(req, res, next) {
+
+    var user = req.user;
+    if (typeof(user) == 'undefined')
+        res.redirect('/');
+    User.findById(user._id, function(err, foundUser){
+        if(err){
+            res.status(422).json({error: 'No user found.'});
+            return next(err);
+            res.redirect('/');
+        }
+        if('admin' === foundUser.role){
+            return next();
+        }
+        res.redirect('/');
+    });
+
 }

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <% include partials/head %>
+
+</head>
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+<% include partials/header %>
+<!-- Intro Header -->
+<header class="intro">
+    <div class="intro-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <table>
+                        <tr>
+                            <p>
+                            <th>Strava ID</th><th>Strava Email</th><th>Strava Name</th><th>role</th><th>events</th><th>make Admin</th><th>add lf2017</th>
+                            </p>
+                        </tr>
+
+                        <% for (var i = 0; i < users.length; /* I save the data in a variable 'quotation', I don't know how you named your variable  */  i++) { %>
+                        <tr>
+                            <form action="/admin" method="post">
+                                <div class="form-group">
+                                    <input class="hidden" hidden="true" name="userId" value="<%= users[i]._id %>">
+                                </div>
+                                <td><%= users[i].strava.id %></td>
+                                <td><%= users[i].strava.email %></td>
+                                <td><%= users[i].strava.name %></td>
+                                <td><%= users[i].role %></td>
+                                <td><% users[i].events.forEach( function (event) { %>
+                                    <%= event.name %>
+                                    <% }) %> </td>
+                                <td>
+                                    <% if (users[i].role == 'admin') { %>
+                                    <input class="hidden" hidden="true" name="role" value="rider">
+                                    <button type="submit" class="btn btn-primary btn-lg" formaction="/makeAdmin">Rider</button>
+                                    <% } else { %>
+                                    <input class="hidden" hidden="true" name="role" value="admin">
+                                    <button type="submit" class="btn btn-primary btn-lg" formaction="/makeAdmin">Admin</button>
+                                    <% }%>
+                                </td>
+                                <td>
+                                    <button type="submit" class="btn btn-primary btn-lg" formaction="/makeLF">lf2017</button>
+                                </td>
+                            </form>
+                        </tr>
+                        <% } %>
+
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section id="about" class="container content-section text-center">
+    <div class="row">
+        <div class="container">
+
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<footer>
+    <% include partials/footer %>
+</footer>
+</body>
+</html>
