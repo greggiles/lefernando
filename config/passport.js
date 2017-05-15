@@ -59,16 +59,23 @@ module.exports = function(passport) {
                                 user.strava.token = token;
                                 user.strava.name  = profile.displayName;
                                 user.strava.email = (profile.emails[0].value || '').toLowerCase(); // pull the first email
+                                AllowedUsers.findOne({ 'email' : profile.emails[0].value }, function(err, allowedUser) {
+                                    if (allowedUser != null){
+                                        user.events = [{"name": "lf2017"}];
+                                    }
+                                    user.save(function(err) {
+                                        if (err)
+                                            return done(err);
 
-                                user.save(function(err) {
-                                    if (err)
-                                        return done(err);
-
-                                    return done(null, user);
+                                        return done(null, user);
+                                    });
                                 });
                             }
+                            else {
+                                return done(null, user);
+                            }
 
-                            return done(null, user);
+
                         } else {
 
                             AllowedUsers.findOne({ 'email' : profile.emails[0].value }, function(err, allowedUser) {
