@@ -19,7 +19,7 @@ Uses Passport to authenticate users with Strava
 
 If you would like to download the code and try it for yourself:
 
-1. Clone the repo: `git clone git@github.com:scotch-io/easy-node-authentication`
+1. Clone the repo: `git clone git@github.com:greggiles/lefernando`
 2. Install packages: `npm install`
 3. Set database configuration with env Variables. See config/database.js
 4. Set strava auth keys in with env Variables. See config/auth.js
