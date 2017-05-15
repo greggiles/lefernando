@@ -26,3 +26,7 @@ If you would like to download the code and try it for yourself:
 5. Launch: `node server.js`
 6. Visit in your browser at: `http://localhost:8080`
 
+## Notes
+
+* JETT Start - 5954636
+* JETT Finish - 5954644
