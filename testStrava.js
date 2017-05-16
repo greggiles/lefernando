@@ -6,6 +6,7 @@ var strava = require('strava-v3'),
     _ = require('lodash'),
     async = require('async');
 
+
 var mongoose = require('mongoose');
 var configDB = require('./config/database.js');
 // configuration ===============================================================
@@ -16,27 +17,27 @@ require('moment-duration-format');
 
 var User       = require('./app/models/user');
 
-var date = '2017-04-10',
-    time1 = '18:30:00',
-    time2 = '19:30:00',
+var date = '2017-05-01',
+    time1 = '18:40:00',
+    time2 = '19:20:00',
     time3 = '19:30:00',
-    time4 = '20:30:00';
+    time4 = '21:30:00';
 
-
-
-args = {
+var args = {
     'access_token':process.env.STRAVA_TOK,
-    'id' : '5954636',
+     'id' : '5954636', //JETT
+    //'id' : '7815469', // BSR
     'start_date_local' : date+'T'+time1+'Z',
     'end_date_local': date+'T'+time2+'Z'
 };
-args2 = {
+var args2 = {
     'access_token':process.env.STRAVA_TOK,
-    'id' : '5954644',
+    'id' : '5954644', //JETT
+    // 'id' : '6076569', // BSR
     'start_date_local' : date+'T'+time3+'Z',
     'end_date_local': date+'T'+time4+'Z'
 };
-args3 = {
+var args3 = {
     'access_token':process.env.STRAVA_TOK,
     'id' : '5954644'
 };
@@ -71,9 +72,10 @@ async.parallel([
     if(err) {
         console.log(err);
     }
+
     else {
         res[0].forEach(function(start) {
-            // console.log('checking ' + start.athlete.id + ' at ' + start.start_date_local);
+            console.log('checking ' + start.athlete.id + ' at ' + start.start_date_local);
             var startTime = moment(start.start_date_local);
             var finishTime = startTime.subtract(1, 'seconds');
             var finishIdx = 0;

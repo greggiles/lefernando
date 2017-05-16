@@ -16,13 +16,20 @@
                         <p>Login with:</p>
                         <p><a href="/auth/strava"><img src="./btn_strava_connectwith_orange.png"></a></p>
                     <% } else { %>
+
                         <h1 class="brand-heading">LeFernando</h1>
-                                <p class="intro-text">the best week of spring.
-                        <br>too bad you can't talk about it, huh, <%= user.strava.name %>?</p>
-                        <a href="#about" class="btn btn-circle page-scroll">
-                            <i class="fa fa-angle-double-down animated"></i>
+                        <% if (typeof ride != null && ride.totalTime != '') { %>
+                            <p class="intro-text">A <%= ride.totalTime %> JETT?. Nice Job,
+                                <br><%= user.strava.name %></p>
+                            <a href="#about" class="btn btn-circle page-scroll">
+                                <i class="fa fa-angle-double-down animated"></i></a>
+                        <% } else { %>
+                                <p class="intro-text">Why come you have no JETT?</br>... at least you have the best week of spring to look forward to.
+                            <br>too bad you can't talk about it, huh, <%= user.strava.name %>?</p>
+                            <a href="#about" class="btn btn-circle page-scroll">
+                                <i class="fa fa-angle-double-down animated"></i>
                         </a>
-                    <% } %>
+                    <% } } %>
                 </div>
             </div>
         </div>
@@ -53,7 +60,7 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2">
                     <h2>Where we Ride</h2>
-                    <iframe src="https://www.google.com/maps/d/embed?mid=1cazKA22C0H2JpnPjlavtKZKZKQo" width="640" height="480"></iframe>
+                    <iframe src="https://www.google.com/maps/d/embed?mid=1cazKA22C0H2JpnPjlavtKZKZKQo" width="100%" height="480"></iframe>
                 </div>
             </div>
         </section>

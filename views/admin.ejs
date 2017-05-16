@@ -2,6 +2,10 @@
 <html lang="en">
 <head>
     <% include partials/head %>
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
 
 </head>
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
@@ -11,57 +15,61 @@
     <div class="intro-body">
         <div class="container">
             <div class="row">
-                <div class="col-md-8 col-md-offset-2">
-                    <table>
-                        <tr>
-                            <p>
-                            <th>Strava ID</th><th>Strava Email</th><th>Strava Name</th><th>role</th><th>events</th><th>make Admin</th><th>add lf2017</th>
-                            </p>
-                        </tr>
+                <h2>Administration Interface</h2>
+                <a href="#riders" class="btn btn-circle page-scroll">
+                    <i class="fa fa-angle-double-down animated"></i></a>
 
-                        <% for (var i = 0; i < users.length; /* I save the data in a variable 'quotation', I don't know how you named your variable  */  i++) { %>
-                        <tr>
-                            <form action="/admin" method="post">
-                                <div class="form-group">
-                                    <input class="hidden" hidden="true" name="userId" value="<%= users[i]._id %>">
-                                </div>
-                                <td><%= users[i].strava.id %></td>
-                                <td><%= users[i].strava.email %></td>
-                                <td><%= users[i].strava.name %></td>
-                                <td><%= users[i].role %></td>
-                                <td><% users[i].events.forEach( function (event) { %>
-                                    <%= event.name %>
-                                    <% }) %> </td>
-                                <td>
-                                    <% if (users[i].role == 'admin') { %>
-                                    <input class="hidden" hidden="true" name="role" value="rider">
-                                    <button type="submit" class="btn btn-primary btn-lg" formaction="/makeAdmin">Rider</button>
-                                    <% } else { %>
-                                    <input class="hidden" hidden="true" name="role" value="admin">
-                                    <button type="submit" class="btn btn-primary btn-lg" formaction="/makeAdmin">Admin</button>
-                                    <% }%>
-                                </td>
-                                <td>
-                                    <button type="submit" class="btn btn-primary btn-lg" formaction="/makeLF">lf2017</button>
-                                </td>
-                            </form>
-                        </tr>
-                        <% } %>
-
-
-                    </table>
-                </div>
             </div>
         </div>
     </div>
 </header>
 
-<section id="about" class="container content-section text-center">
+<section id="riders" class="container content-section text-center">
     <div class="row">
         <div class="container">
+            <div class="col-md-8 col-md-offset-2" >
+                <h2>Rider Data</h2>
+                <table class="table-bordered table-condensed" >
+                    <thead>
+                    <tr>
+                        <th>Strava ID</th><th>Strava Email</th><th>Strava Name</th><th>role</th><th>events</th><th>add lf2017</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% for (var i = 0; i < users.length; /* I save the data in a variable 'quotation', I don't know how you named your variable  */  i++) { %>
+                    <tr>
+                        <form action="/admin" method="post">
+                            <div class="form-group">
+                                <input class="hidden" hidden="true" name="userId" value="<%= users[i]._id %>">
+                            </div>
+                            <td><%= users[i].strava.id %></td>
+                            <td><%= users[i].strava.email %></td>
+                            <td><%= users[i].strava.name %></td>
+                            <td>
+                                <% if (users[i].role == 'admin') { %>
+                                <input class="hidden" hidden="true" name="role" value="rider">
+                                <button type="submit" class="btn-xs" formaction="/makeAdmin" color="black">Admin</button>
+                                <% } else { %>
+                                <input class="hidden" hidden="true" name="role" value="admin">
+                                <button type="submit" class="btn-xs" formaction="/makeAdmin">rider</button>
+                                <% }%>
+                            </td>
+                            <td><% users[i].events.forEach( function (event) { %>
+                                <%= event.name %>
+                                <% }) %> </td>
+                            <td>
+                                <button type="submit" class="btn-xs" formaction="/makeLF">lf2017</button>
+                            </td>
+                        </form>
+                    </tr>
+                    <% } %>
 
-                </div>
-            </form>
+                    </tbody>
+
+                </table>
+            </div>
+
+
         </div>
     </div>
 </section>

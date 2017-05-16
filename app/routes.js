@@ -1,6 +1,7 @@
 var admin = require('../config/admin.js');
 // load up the user model
-var User       = require('./models/user');
+var User   = require('./models/user');
+var stravaQ = require('./strava');
 
 module.exports = function(app, passport) {
 
@@ -8,9 +9,63 @@ module.exports = function(app, passport) {
 
     // show the home page (will also have our login links)
     app.get('/', function(req, res) {
-        res.render('index.ejs', {
-            user : req.user
-        });
+        // query User strava for active event
+        if (req.isAuthenticated())
+        {
+            stravaQ.getRide(req.user, null, function(err, data){
+                if (err) {
+                    res.render('index.ejs', {
+                        user : req.user,
+                        ride : null
+                    });
+
+                } else {
+                    res.render('index.ejs', {
+                        user : req.user,
+                        ride : data
+                    });
+                }
+            });
+
+        }
+        else {
+            res.render('index.ejs', {
+                user : req.user,
+                ride : null
+            });
+        }
+
+
+    });
+
+    // show the home page (will also have our login links)
+    app.get('/jett', function(req, res) {
+        // query User strava for active event
+        if (req.isAuthenticated())
+        {
+            stravaQ.getRides(req.user, null, function(err, data){
+                if (err) {
+                    res.render('index.ejs', {
+                        user : req.user,
+                        ride : null
+                    });
+                } else {
+                    res.render('jett.ejs', {
+                        user : req.user,
+                        rides : data
+                    });
+                }
+            });
+
+        }
+        else {
+            res.render('index.ejs', {
+                user : req.user,
+                ride : null
+            });
+        }
+
+
     });
 
     // PROFILE SECTION =========================
