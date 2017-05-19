@@ -1,0 +1,10 @@
+{
+  "name": "lefernando",
+  "alias": "lefernando.xyz",
+  "env": {
+    "db": "@mongopath",
+    "STRAVA_CLIENT_ID": "@stravaclient",
+    "STRAVA_CLIENT_SECRET": "@stravasecret"
+  },
+  "public": false
+}

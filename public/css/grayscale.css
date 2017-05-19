@@ -96,11 +96,16 @@ a:focus {
   outline: none;
 }
 .navbar-custom .nav li.active a {
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(125, 255, 255, 0.3);
 }
 .navbar-custom .nav li.active a:hover {
   color: white;
 }
+
+.dropdown-menu:hover li a:hover {
+  color: black;
+}
+
 @media (min-width: 768px) {
   .navbar-custom {
     padding: 20px 0;
@@ -124,7 +129,7 @@ a:focus {
   padding: 100px 0;
   text-align: center;
   color: white;
-  background: url(../img/loggedin-bg.jpg) no-repeat bottom center scroll;
+  background: url(../img/downloads-bg.jpg) no-repeat bottom center scroll;
   background-color: black;
   -webkit-background-size: cover;
   -moz-background-size: cover;

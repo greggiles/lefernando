@@ -75,11 +75,44 @@ module.exports = function(app, passport) {
         });
     });
 
-    // PROFILE SECTION =========================
+    // lf2017 SECTION =========================
     app.get('/lf2017', isLoggedIn, function(req, res) {
         res.render('years/2017.ejs', {
             user : req.user
         });
+    });
+    app.get('/lf2017whoin', isLoggedIn, function(req, res) {
+        res.render('years/2017-who.ejs', {
+            user : req.user
+        });
+    });
+    app.get('/lf2017stage1', isLoggedIn, function(req, res) {
+        // query User strava for active event
+        if (req.isAuthenticated())
+        {
+            stravaQ.getRides(req.user, null, function(err, data){
+                if (err) {
+                    res.render('index.ejs', {
+                        user : req.user,
+                        ride : null
+                    });
+                } else {
+                    res.render('years/2017/results/stage1.ejs', {
+                        user : req.user,
+                        rides : data
+                    });
+                }
+            });
+
+        }
+        else {
+            res.render('index.ejs', {
+                user : req.user,
+                ride : null
+            });
+        }
+
+
     });
 
     // LOGOUT ==============================
@@ -161,44 +194,43 @@ module.exports = function(app, passport) {
 
         // SIGNUP =================================
         // show the signup form
-        app.get('/signup', isLoggedIn, function(req, res) {
+        app.get('/signup', isLoggedIn, isLf2017, function(req, res) {
             res.render('signup.ejs', {
-                user : req.user
+                user: req.user
             });
         });
 
-        // process the signup form
-        app.post('/signup', passport.authenticate('local-signup', {
-            successRedirect : '/profile', // redirect to the secure profile section
-            failureRedirect : '/signup', // redirect back to the signup page if there is an error
-            failureFlash : true // allow flash messages
-        }));
 
 
     // strava ---------------------------------
 
-        // send to google to do the authentication
+        // send to strava to do the authentication
         app.get('/auth/strava', passport.authenticate('strava', { scope : ['public'] }));
 
         // the callback after google has authenticated the user
-        app.get('/auth/strava/callback',
-            passport.authenticate('strava', {
-                successRedirect : '/',
-                failureRedirect : '/'
-            }));
+        app.get('/auth/strava/callback', function(req, res, next) {
+            passport.authenticate('strava', function(err, user, info) {
+                // This is the default destination upon successful login.
+                var redirectUrl = '/';
+
+                if (err) { return next(err); }
+                if (!user) { return res.redirect('/'); }
+
+                // If we have previously stored a redirectUrl, use that,
+                // otherwise, use the default.
+                if (req.session.redirectUrl) {
+                    redirectUrl = req.session.redirectUrl;
+                    req.session.redirectUrl = null;
+                }
+                req.logIn(user, function(err){
+                    if (err) { return next(err); }
+                });
+                res.redirect(redirectUrl);
+            })(req, res, next);
+        });
 
 
-    // strava ---------------------------------
 
-    // send to google to do the authentication
-    app.get('/connect/strava', passport.authorize('strava', { scope : ['public'] }));
-
-    // the callback after google has authorized the user
-    app.get('/connect/strava/callback',
-        passport.authorize('strava', {
-            successRedirect : '/profile',
-            failureRedirect : '/'
-        }));
 
 // =============================================================================
 // UNLINK ACCOUNTS =============================================================
@@ -220,10 +252,28 @@ module.exports = function(app, passport) {
 
 // route middleware to ensure user is logged in
 function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated())
-        return next();
+    if (req.isAuthenticated()) {return next();}
+    if (req.url != '/') req.session.redirectUrl = req.url;
+    res.redirect('/auth/strava');
+}
 
-    res.redirect('/');
+function isLf2017(req, res, next) {
+
+    var user = req.user;
+    if (typeof(user) == 'undefined')
+        res.redirect('/');
+    User.findById(user._id, function(err, foundUser){
+        if(err){
+            res.status(422).json({error: 'No user found.'});
+            return next(err);
+            res.redirect('/');
+        }
+        if( foundUser.events.length > 0) {
+            return next();
+        }
+        res.redirect('/');
+    });
+
 }
 
 function isAdmin(req, res, next) {
