@@ -24,9 +24,9 @@
                 <li><a class="navbar" href="/admin">Admin</a></li>
                 <% } %>
 
-                <% if ( user.events.length > 0 ) { %>
-                    <li><a class="navbar" href="/signup">Signup</a></li>
-                <% } %>
+                <!--<% if ( user.events.length > 0 ) { %>-->
+                    <!--<li><a class="navbar" href="/signup">Signup</a></li>-->
+                <!--<% } %>-->
 <!--                <li><a class="page-scroll" href="/profile">Profile</a></li>
  -->
                 <% user.events.forEach(function(event) { %>
@@ -37,7 +37,7 @@
                         <li><a href="/<%= event.name %>whoin">The Riders</a></li>
                         <li><a href="/<%= event.name %>standings">The Standings</a></li>
                         <li class="divider"></li>
-                        <li>Stage Results</li>
+                        <li style="color: grey;">Stage Results</li>
                         <!--<li class="dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Stage Results</a>-->
                             <!--<ul class="dropdown-menu">-->
                                 <li><a href="/<%= event.name %>stage1">Stage 1</a></li>

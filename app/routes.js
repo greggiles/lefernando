@@ -2,6 +2,7 @@ var admin = require('../config/admin.js');
 // load up the user model
 var User   = require('./models/user');
 var stravaQ = require('./strava');
+var eventDetails = require('./eventDetails')
 
 module.exports = function(app, passport) {
 
@@ -12,20 +13,26 @@ module.exports = function(app, passport) {
         // query User strava for active event
         if (req.isAuthenticated())
         {
-            stravaQ.getRide(req.user, null, function(err, data){
-                if (err) {
-                    res.render('index.ejs', {
-                        user : req.user,
-                        ride : null
-                    });
+            // stravaQ.getRide(req.user, null, function(err, data){
+            //     if (err) {
+            //         res.render('index.ejs', {
+            //             user : req.user,
+            //             ride : null
+            //         });
+            //
+            //     } else {
+            //         res.render('index.ejs', {
+            //             user : req.user,
+            //             ride : data
+            //         });
+            //     }
+            // });
 
-                } else {
-                    res.render('index.ejs', {
-                        user : req.user,
-                        ride : data
-                    });
-                }
+            res.render('index.ejs', {
+                user : req.user,
+                ride : null
             });
+
 
         }
         else {
@@ -43,7 +50,7 @@ module.exports = function(app, passport) {
         // query User strava for active event
         if (req.isAuthenticated())
         {
-            stravaQ.getRides(req.user, null, function(err, data){
+            stravaQ.getRides(req.user, eventDetails.jett, function(err, data){
                 if (err) {
                     res.render('index.ejs', {
                         user : req.user,
@@ -90,7 +97,7 @@ module.exports = function(app, passport) {
         // query User strava for active event
         if (req.isAuthenticated())
         {
-            stravaQ.getRides(req.user, null, function(err, data){
+            stravaQ.getRides(req.user, eventDetails.stage1, function(err, data){
                 if (err) {
                     res.render('index.ejs', {
                         user : req.user,
@@ -192,13 +199,13 @@ module.exports = function(app, passport) {
             failureFlash : true // allow flash messages
         }));
 
-        // SIGNUP =================================
-        // show the signup form
-        app.get('/signup', isLoggedIn, isLf2017, function(req, res) {
-            res.render('signup.ejs', {
-                user: req.user
-            });
-        });
+        // // SIGNUP =================================
+        // // show the signup form
+        // app.get('/signup', isLoggedIn, isLf2017, function(req, res) {
+        //     res.render('signup.ejs', {
+        //         user: req.user
+        //     });
+        // });
 
 
 

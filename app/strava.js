@@ -7,35 +7,22 @@ var strava = require('strava-v3'),
     async = require('async');
 // load the auth variables
 // var configAuth = require('./config/auth'); // use this one for testing
-
 require('moment-duration-format');
 
 var User       = require('./models/user');
 
-var eventIdx = 1;   //0-brighton
-                    //1-JETT
-
-var test = {
-    date: '2017-05-15',
-    time1: '18:55:00',
-    time2: '19:20:00',
-    time3: '19:20:00',
-    time4: '21:00:00',
-    seg1: ['7815469', '5954636'],
-    seg2: ['6076569', '5954644']
-};
 
 var args = {
     'access_token':process.env.STRAVA_TOK,
-    'id' : test.seg1[eventIdx],
-    'start_date_local' : test.date+'T'+test.time1+'Z',
-    'end_date_local': test.date+'T'+test.time2+'Z'
+    'id' : 0,
+    'start_date_local' : '',
+    'end_date_local': ''
 };
 var args2 = {
     'access_token':process.env.STRAVA_TOK,
-    'id' : test.seg2[eventIdx],
-    'start_date_local' : test.date+'T'+test.time3+'Z',
-    'end_date_local': test.date+'T'+test.time4+'Z'
+    'id' : 0,
+    'start_date_local' : '',
+    'end_date_local': ''
 };
 var args3 = {
     'access_token':process.env.STRAVA_TOK,
@@ -138,11 +125,19 @@ exports.getRide=function(user, event, cb) {
 
 exports.getRides=function(user, event, cb) {
 
-    args.athlete_id = '';
-    args2.athlete_id = '';
-
     args.access_token = user.strava.token;
-    args2.access_token = user.strava.token;
+    args.athlete_id = '';
+    args.id = event.seg1;
+    args.start_date_local = event.date+'T'+event.time1+'Z';
+    args.end_date_local = event.date+'T'+event.time2+'Z';
+
+    if ('' != event.seg2) {
+        args2.access_token = user.strava.token;
+        args2.athlete_id = '';
+        args2.id = event.seg2;
+        args2.start_date_local = event.date+'T'+event.time3+'Z';
+        args2.end_date_local = event.date+'T'+event.time4+'Z';
+    }
 
     rides=[];
 
@@ -161,16 +156,23 @@ exports.getRides=function(user, event, cb) {
             });
         },
         function (callback) {
-            strava.segments.listEfforts(args2,function(err,payload,limits) {
-                if(!err) {
-                    // console.log(limits);
-                    callback(null, payload);
-                }
-                else {
-                    // console.log('return 2');
-                    callback(err, null);
-                }
-            });
+            if ('' != event.seg2) {
+                strava.segments.listEfforts(args2,function(err,payload,limits) {
+                    if(!err) {
+                        // console.log(limits);
+                        callback(null, payload);
+                    }
+                    else {
+                        // console.log('return 2');
+                        callback(err, null);
+                    }
+                });
+            }
+            else
+            {
+                callback(null, null);
+            }
+
         }
     ], function (err,res) {
         if(err) {
@@ -189,31 +191,38 @@ exports.getRides=function(user, event, cb) {
                         var finishTime = startTime.subtract(1, 'seconds');
                         var finishIdx = 0;
                         var totalTime = 0;
-                        while (finishIdx > -1 && finishIdx < res[1].length) {
-                            finishIdx = _.findIndex(res[1], function(o){return o.athlete.id == start.athlete.id; }, finishIdx);
-                            if (finishIdx > -1 && finishIdx < res[1].length) {
-                                // console.log(" -- found matching ID at IDX " + finishIdx + ' at ' + res[1][finishIdx].start_date_local  + ' that took ' + res[1][finishIdx].elapsed_time);
-                                finishTime = moment(res[1][finishIdx].start_date_local);
-                                finishTime.add(res[1][finishIdx].elapsed_time, 'seconds');
-                                if (finishTime.isAfter(startTime) )
-                                    break;
-                                else
-                                    finishIdx++;
-                            }
-                            else {
-                                finishTime = undefined;
-                                //console.log( 'hmm ... FinishIdx is ' + finishIdx);
+                        if ('' != event.seg2) {
+                            while (finishIdx > -1 && finishIdx < res[1].length) {
+                                finishIdx = _.findIndex(res[1], function (o) {
+                                    return o.athlete.id == start.athlete.id;
+                                }, finishIdx);
+                                if (finishIdx > -1 && finishIdx < res[1].length) {
+                                    // console.log(" -- found matching ID at IDX " + finishIdx + ' at ' + res[1][finishIdx].start_date_local  + ' that took ' + res[1][finishIdx].elapsed_time);
+                                    finishTime = moment(res[1][finishIdx].start_date_local);
+                                    finishTime.add(res[1][finishIdx].elapsed_time, 'seconds');
+                                    if (finishTime.isAfter(startTime))
+                                        break;
+                                    else
+                                        finishIdx++;
+                                }
+                                else {
+                                    finishTime = undefined;
+                                    //console.log( 'hmm ... FinishIdx is ' + finishIdx);
+                                }
                             }
                         }
+                        else {
+                            finishTime = startTime.add(start.elapsed_time, 'seconds');
 
+                        }
                         if (typeof(finishTime) != 'undefined')
                         {
                             totalTime = moment.duration(finishTime.diff(startTime, 'milliseconds'));
                             rides.push( {
                                 rider: start.athlete.name,
-                                startTime:  startTime.format('h:mm:ss.S'),
-                                finishTime: finishTime.format('h:mm:ss.S'),
-                                totalTime:  totalTime.format('h:mm:ss.S')
+                                startTime:  startTime.format('HH:mm:ss.S'),
+                                finishTime: finishTime.format('HH:mm:ss.S'),
+                                totalTime:  totalTime.format('HH:mm:ss.S',  { trim: false })
                             });
                         }
                         else {
