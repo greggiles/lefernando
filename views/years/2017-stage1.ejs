@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <% include ../partials/head %>
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+
+</head>
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+<% include ../partials/header %>
+<!-- Intro Header -->
+<header class="intro">
+    <div class="intro-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-md-offset-0">
+                    <% if (typeof user == 'undefined') { %>
+                    <p>Login with:</p>
+                    <p><a href="/auth/strava"><img src="./btn_strava_connectwith_orange.png"></a></p>
+                    <% } else { %>
+                    <h1 class="brand-heading">LeFernando 2017</h1>
+
+                    <p>Details<br>
+                        <a href="#details" class="btn btn-circle page-scroll">
+                            <i class="fa fa-angle-double-down animated"></i>
+                        </a></p>
+                    <p>Official Results<br>
+                        <a href="#official" class="btn btn-circle page-scroll">
+                            <i class="fa fa-angle-double-down animated"></i>
+                        </a></p>
+                    <p>Preliminary Strava Data<br>
+                        <a href="#strava" class="btn btn-circle page-scroll">
+                            <i class="fa fa-angle-double-down animated"></i>
+                        </a></p>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section id="details" class="container content-section text-center">
+    <div class="row">
+        <div class="col-lg-12 col-lg-offset-0">
+            <h2>Stage 1</h2>
+            <p>
+                The heavens have opened up for the start of Cinco Le Fernando! Dropping what seemed to be a few lakes worth of water on the field, this was by far the wettest Fernando ride to date. The radar scared away more than half the registered riders before the day even began. But the radar looked clear at the start, so the hard core group started out on time. The first lap of Addison had some puddles, a few slick spots, but nothing that slowed anyone down. The first downpour happened while somewhere on the first lap of Bald Mtn, only lasting a few minutes but dropped enough water to leave rivers flowing down the trail, face slappers, and large lakes (or puddles). The second lap of Addison brought another downpour, this one lasting much longer, and making the situation much worse. For those that could see anything, the only thing to see was water, everywhere. There was a total of 10 DNF's on the day, and a whopping 26 DNS's, leaving only 14 riders who finished the stage in full.
+            </p>
+            <p>
+                As with every year this stage brings chaos, and today it started with the second group of riders being lead by El Navegador, heading the wrong way on Addison. He is not called the Navigator for nothing! The first lap took down two GC contender hopefuls; Senor pantelon con tirantes (slick bridge send him down hard) and Cuerpo de Papá (complete lack of vision after the rains). Then the rest of the field started to drop like flies, either taking wrong turns or simply wanting to get out of the wet. The most dedicated rider for the day was Ignacio Zen de Aguantar, who pushed through multiple flat tires, ultimately running/walking the last 4 miles just to avoid the DNF!
+            </p><p>
+                Taking the win today with a sprint finish was Manivela, who puts his team on top. Turbotodd was second on the day but sits atop the GC leader board by a good 3 minutes. New Fernando rider this year el Don Kasper takes second on the GC board, this guy may be one to watch! For the Climb point competition él Lider jumps out in front taking 1st on both laps. Manivela not only has the fasted time of the day but also ends up the Sprint points leader, but the competition is tight at the top!
+            </p>
+        </div>
+        </br>
+
+    </div>
+</section>
+
+
+
+<section id="official" class="container content-section text-center">
+    <div class="row">
+        <div class="col-lg-12 col-lg-offset-0">
+            <h2>Stage Results</h2>
+            <iframe width="100%" height="1350px" src="https://docs.google.com/spreadsheets/d/1HTMT7oZgxWKd7rF-YsDYdleYYuXzRHqGbRTi5295Pw4/pubhtml?gid=1&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
+        </div>
+        </br>
+
+    </div>
+</section>
+
+
+
+<section id="strava" class="container content-section text-center">
+    <div class="row">
+        <div class="container">
+            <div class="col-md-8 col-md-offset-2" >
+                <h2>Raw Strava Data</h2>
+                <p>This is just preliminary Strava Data ... best guess from automation.</p>
+                <table  id="results" class="table-bordered table-condensed" >
+                    <thead>
+                    <tr>
+                        <th>Strava ID</th><th>Start</th><th>Finish</th><th>Time</th>
+                    </tr>
+                    </thead>
+                    <tbody style="color:red;">
+                    <% for (var i = 0; i < rides.length; /* I save the data in a variable 'quotation', I don't know how you named your variable  */  i++) { %>
+                    <tr>
+                        <form action="/admin" method="post">
+                            <td><%= rides[i].rider %></td>
+                            <td><%= rides[i].startTime %></td>
+                            <td><%= rides[i].finishTime %></td>
+                            <td><%= rides[i].totalTime %></td>
+                        </form>
+                    </tr>
+                    <% } %>
+
+                    </tbody>
+
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+</section>
+<footer>
+    <% include ../partials/footer %>
+</footer>
+</body>
+</html>

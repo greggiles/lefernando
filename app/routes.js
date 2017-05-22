@@ -93,6 +93,11 @@ module.exports = function(app, passport) {
             user : req.user
         });
     });
+    app.get('/lf2017standings', isLoggedIn, function(req, res) {
+        res.render('years/2017-standings.ejs', {
+            user : req.user
+        });
+    });
     app.get('/lf2017stage1', isLoggedIn, function(req, res) {
         // query User strava for active event
         if (req.isAuthenticated())
@@ -104,7 +109,7 @@ module.exports = function(app, passport) {
                         ride : null
                     });
                 } else {
-                    res.render('years/2017/results/stage1.ejs', {
+                    res.render('years/2017-stage1.ejs', {
                         user : req.user,
                         rides : data
                     });
@@ -121,6 +126,152 @@ module.exports = function(app, passport) {
 
 
     });
+
+    app.get('/lf2017stage2', isLoggedIn, function(req, res) {
+        // query User strava for active event
+        if (req.isAuthenticated())
+        {
+            stravaQ.getRides(req.user, eventDetails.stage2, function(err, data){
+                if (err) {
+                    res.render('index.ejs', {
+                        user : req.user,
+                        ride : null
+                    });
+                } else {
+                    res.render('years/2017-stage2.ejs', {
+                        user : req.user,
+                        rides : data
+                    });
+                }
+            });
+
+        }
+        else {
+            res.render('index.ejs', {
+                user : req.user,
+                ride : null
+            });
+        }
+
+
+    });
+
+    app.get('/lf2017stage3', isLoggedIn, function(req, res) {
+        // query User strava for active event
+        if (req.isAuthenticated())
+        {
+            stravaQ.getRides(req.user, eventDetails.stage3, function(err, data){
+                if (err) {
+                    res.render('index.ejs', {
+                        user : req.user,
+                        ride : null
+                    });
+                } else {
+                    res.render('years/2017-stage3.ejs', {
+                        user : req.user,
+                        rides : data
+                    });
+                }
+            });
+
+        }
+        else {
+            res.render('index.ejs', {
+                user : req.user,
+                ride : null
+            });
+        }
+
+
+    });
+
+    app.get('/lf2017stage4', isLoggedIn, function(req, res) {
+        // query User strava for active event
+        if (req.isAuthenticated())
+        {
+            stravaQ.getRides(req.user, eventDetails.stage4, function(err, data){
+                if (err) {
+                    res.render('index.ejs', {
+                        user : req.user,
+                        ride : null
+                    });
+                } else {
+                    res.render('years/2017-stage4.ejs', {
+                        user : req.user,
+                        rides : data
+                    });
+                }
+            });
+
+        }
+        else {
+            res.render('index.ejs', {
+                user : req.user,
+                ride : null
+            });
+        }
+
+
+    });
+
+    app.get('/lf2017stage5', isLoggedIn, function(req, res) {
+        // query User strava for active event
+        if (req.isAuthenticated())
+        {
+            stravaQ.getRides(req.user, eventDetails.stage5, function(err, data){
+                if (err) {
+                    res.render('index.ejs', {
+                        user : req.user,
+                        ride : null
+                    });
+                } else {
+                    res.render('years/2017-stage5.ejs', {
+                        user : req.user,
+                        rides : data
+                    });
+                }
+            });
+
+        }
+        else {
+            res.render('index.ejs', {
+                user : req.user,
+                ride : null
+            });
+        }
+
+
+    });
+
+    app.get('/lf2017stage6', isLoggedIn, function(req, res) {
+        // query User strava for active event
+        if (req.isAuthenticated())
+        {
+            stravaQ.getRides(req.user, eventDetails.stage6, function(err, data){
+                if (err) {
+                    res.render('index.ejs', {
+                        user : req.user,
+                        ride : null
+                    });
+                } else {
+                    res.render('years/2017-stage6.ejs', {
+                        user : req.user,
+                        rides : data
+                    });
+                }
+            });
+
+        }
+        else {
+            res.render('index.ejs', {
+                user : req.user,
+                ride : null
+            });
+        }
+
+
+    });
+
 
     // LOGOUT ==============================
     app.get('/logout', function(req, res) {

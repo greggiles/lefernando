@@ -188,7 +188,7 @@ exports.getRides=function(user, event, cb) {
 
                         console.log('checking ' + start.athlete.id + ' at ' + start.start_date_local);
                         var startTime = moment(start.start_date_local);
-                        var finishTime = startTime.subtract(1, 'seconds');
+                        var finishTime = moment(start.start_date_local).subtract(1, 'seconds');
                         var finishIdx = 0;
                         var totalTime = 0;
                         if ('' != event.seg2) {
@@ -212,7 +212,7 @@ exports.getRides=function(user, event, cb) {
                             }
                         }
                         else {
-                            finishTime = startTime.add(start.elapsed_time, 'seconds');
+                            finishTime = moment(start.start_date_local).add(start.elapsed_time, 'seconds');
 
                         }
                         if (typeof(finishTime) != 'undefined')
