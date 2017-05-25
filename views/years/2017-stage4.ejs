@@ -15,23 +15,28 @@
     <div class="intro-body">
         <div class="container">
             <div class="row">
-                <div class="col-md-8 col-md-offset-2">
-                    <% if (typeof user == 'undefined') { %>
-                    <p>Login with:</p>
-                    <p><a href="/auth/strava"><img src="./btn_strava_connectwith_orange.png"></a></p>
-                    <% } else { %>
+                <div class="col-md-10 col-md-offset-1 col-sm-offset-0 col-xs-12 col-xs-offset-0">
                     <h1 class="brand-heading">LeFernando 2017</h1>
+                    <h2>Stage 4</h2>
+                    <div class="col-md-2  col-md-offset-3 col-xs-3 col-xs-offset-2">
+                        <p>Stage </br>Details<br>
+                            <a href="#details" class="btn btn-circle page-scroll">
+                                <i class="fa fa-angle-double-down animated"></i>
+                            </a></p>
+                    </div>
+                    <div class="col-md-2  col-lg-offset-0 col-xs-3 col-xs-offset-0">
+                        <p>Official</br>Results<br>
+                            <a href="#official" class="btn btn-circle page-scroll">
+                                <i class="fa fa-angle-double-down animated"></i>
+                            </a></p>
+                    </div>
+                    <div class="col-md-2  col-lg-offset-0 col-xs-3 col-xs-offset-0">
+                        <p>Raw </br>Strava<br>
+                            <a href="#strava" class="btn btn-circle page-scroll">
+                                <i class="fa fa-angle-double-down animated"></i>
+                            </a></p>
+                    </div>
 
-                    <h2>Stage 4 Results</h2>
-                    <p>Official<br>
-                        <a href="#official" class="btn btn-circle page-scroll">
-                            <i class="fa fa-angle-double-down animated"></i>
-                        </a></p>
-                    <p>Preliminary Strava Data<br>
-                        <a href="#strava" class="btn btn-circle page-scroll">
-                            <i class="fa fa-angle-double-down animated"></i>
-                        </a></p>
-                    <% } %>
                 </div>
             </div>
         </div>
